@@ -1,0 +1,8 @@
+#!/bin/bash
+
+mkdir -p /var/log/nginx
+
+sed -i "s|<USER> <GROUP>|etdev users|g;
+		s|<WP_VERSION>|${WP_VERSION}|g" /etc/nginx/nginx.conf
+
+exec nginx
