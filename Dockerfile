@@ -1,18 +1,21 @@
-ARG PHP_VERSION=5.6.33
+ARG PHP_VERSION=5.6.35
 
 FROM elegantthemes/php:${PHP_VERSION}
 
 # Version of WordPress to be used by this image
-ARG WP_VERSION=4.9.4
+ARG WP_VERSION=4.9.5
 # This image's version
-ARG IMAGE_VERSION=4.9.4-php56
+ARG IMAGE_VERSION=4.9.5-php56
 # Absolute path to WordPress files inside the container
-ARG VIRTUAL_ROOT=/workspace/wordpress/4.9.4
+ARG VIRTUAL_ROOT=/workspace/wordpress
+# Site URL
+ARG VIRTUAL_HOST=local.divi-dev.site
 
 ENV \
 	IMAGE_VERSION=${IMAGE_VERSION} \
 	WP_VERSION=${WP_VERSION} \
-	VIRTUAL_ROOT=${VIRTUAL_ROOT}
+	VIRTUAL_ROOT=${VIRTUAL_ROOT} \
+	VIRTUAL_HOST=${VIRTUAL_HOST}
 
 RUN set -e \
 	&& export DEBIAN_FRONTEND=non-interactive \
@@ -27,6 +30,7 @@ RUN set -e \
 		unzip \
 		zip \
 		nginx \
+		gettext \
 	# Nginx
 	&& mkdir -p /var/log/nginx \
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
@@ -37,17 +41,12 @@ RUN set -e \
 	# NodeJS
 	&& curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 	&& apt-install nodejs yarn \
-	# Replace npm with yarn
-	&& rm -rf /usr/lib/node_modules/npm \
-	&& rm /usr/bin/npm \
-	&& ln -s /usr/bin/yarn /usr/bin/npm \
 	# WP-CLI
 	&& curl -L https://cdn.rawgit.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /usr/bin/wp \
 	&& chmod +x /usr/bin/wp \
 	# Cleanup
 	&& rm -rf /home/*/.wp-cli \
 	&& apt-get -y purge python3 \
-	&& { [[ "${PHP_VERSION}" = '5.2.17' ]] && sed -i 's|AddKeysToAgent|#&|g' /root/.ssh/config || true; } \
 	&& docker-clean
 
 WORKDIR /workspace
@@ -59,5 +58,5 @@ ARG REV=''
 #   - If $REV == '', version label will be 5.6.31
 #   - If $REV == '2', version label will be 5.6.31_2
 LABEL \
-	org.label-schema.name=WordPress \
+	org.label-schema.name='Divi Development Environment' \
 	org.label-schema.version=${IMAGE_VERSION}${REV:+_${REV}}

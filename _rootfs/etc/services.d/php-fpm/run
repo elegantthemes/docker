@@ -1,29 +1,13 @@
 #!/bin/bash
 
-chown -R 1000:100 /workspace /var/lib/php /tmp
-
-if [[ "${PHP_VERSION}" = 5.2.17 ]]; then
-	mkdir -p /var/www/sites/default /var/log/php52-fpm /var/run/php52-fpm
-	cp /etc/php/5.2/fpm/pool.d/*.example /etc/php/5.2/fpm/pool.d/www.conf
-
-	# php-fpm config
-	sed -i \
-		's%Unix user of processes%<value name="user">etdev</value>%g;
-		s%Unix group of processes%<value name="group">users</value>%g;
-		s%daemonize">yes%daemonize">no%g' /etc/php/5.2/fpm/php-fpm.conf
-
+if ! [[ -e /tmp/.ran_once ]]; then
+	touch /tmp/.ran_once
+	chown -R 1000:100 /workspace /var/lib/php /tmp
 	find /var/log -type d -exec chmod 777 {} \;
-
-	exec php-cgi --fpm -c /etc/php/5.2/fpm --fpm-config /etc/php/5.2/fpm/php-fpm.conf
-
+	# php-fpm config
+	sed -ri \
+		"s/user = (\w|\d|-)+/user = 1000/g;
+		s/group = (\w|\d|-)+/group = 100/g" "/etc/php/${PHP_VERSION:0:3}/fpm/php-fpm.conf" "/etc/php/${PHP_VERSION:0:3}/fpm/pool.d/www.conf"
 fi
-
-
-# php-fpm config
-sed -ri \
-	"s/user = (\w|\d|-)+/user = 1000/g;
-	s/group = (\w|\d|-)+/group = 100/g" "/etc/php/${PHP_VERSION:0:3}/fpm/php-fpm.conf" "/etc/php/${PHP_VERSION:0:3}/fpm/pool.d/www.conf"
-
-find /var/log -type d -exec chmod 777 {} \;
 
 exec "php-fpm${PHP_VERSION:0:3}" --nodaemonize

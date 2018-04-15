@@ -1,0 +1,28 @@
+#!/bin/bash
+
+
+setup() {
+	wp core download --version=${WP_VERSION} --path=${VIRTUAL_ROOT}
+
+	cd /workspace/wordpress
+
+	wp config create
+	wp core install \
+		--url="${VIRTUAL_HOST}" \
+		--title='Divi Dev Site' \
+		--admin_user=divi-dev \
+		--admin_password=password \
+		--admin_email=noreply@divi-dev.site \
+		--skip-email
+
+	wp rewrite structure '/%postname%'
+
+	echo
+	echo "Setup Complete. You can access WordPress using the following URL:"
+	echo
+	echo 'http://local.divi-dev.site'
+	echo
+}
+
+
+"$@"
