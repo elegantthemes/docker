@@ -1,10 +1,68 @@
 #!/bin/bash
 
+_echo() {
+	local RESTORE='\033[0m'
+
+	local RED='\033[00;31m'
+	local GREEN='\033[00;32m'
+	local YELLOW='\033[00;33m'
+	local BLUE='\033[00;34m'
+	local PURPLE='\033[00;35m'
+	local CYAN='\033[00;36m'
+	local LIGHTGRAY='\033[00;37m'
+
+	local LRED='\033[01;31m'
+	local LGREEN='\033[01;32m'
+	local LYELLOW='\033[01;33m'
+	local LBLUE='\033[01;34m'
+	local LPURPLE='\033[01;35m'
+	local LCYAN='\033[01;36m'
+	local WHITE='\033[01;37m'
+
+	local COLOR="${LPURPLE}"
+	local MSG="$1"
+	local OPTIONS=''
+
+	if [[ "${#@}" -gt 2 ]]; then
+		OPTIONS="$1"
+		COLOR="${!2}"
+		MSG="$3"
+	elif [[ "${#@}" -gt 1 ]]; then
+		COLOR="${!1}"
+		MSG="$2"
+	fi
+
+	echo -en "${COLOR}"
+	echo "${OPTIONS}" "${MSG}"
+	echo -en "${RESTORE}"
+}
+
+_sleep_with_progress_bar() {
+	local duration="$1"
+	local line_prefix="$2"
+
+	already_done() { echo -n "${line_prefix}"; for ((done=0; done<$elapsed; done++)); do printf "██"; done }
+	remaining() { for ((remain=$elapsed; remain<$duration; remain++)); do printf "  "; done }
+	percentage() { printf "| %s%%" $(( (($elapsed)*100)/($duration)*100/100 )); }
+	clean_line() { printf "\r"; }
+
+	for (( elapsed=1; elapsed<=$duration; elapsed++ ))
+	do
+		already_done; remaining; percentage
+		sleep 1
+		clean_line
+	done
+
+	echo
+}
 
 setup() {
 	wp core download --version=${WP_VERSION} --path=${VIRTUAL_ROOT}
 
 	cd /workspace/wordpress
+
+	# Give database time to come up
+	_sleep_with_progress_bar 10 'Initializing database...  '
 
 	wp config create
 	wp core install \
@@ -18,12 +76,15 @@ setup() {
 	wp rewrite structure '/%postname%'
 
 	echo
-	echo "Setup Complete. You can access WordPress using the following URL:"
+	_echo -n LGREEN 'Setup Complete! '
+	echo "Here's how you can access WordPress:"
 	echo
-	echo 'http://local.divi-dev.site'
-	echo
-	echo 'Username: divi-dev'
-	echo 'Password: password'
+	echo -n 'URL:      '
+	_echo 'http://local.divi-dev.site'
+	echo -n 'Username: '
+	_echo 'divi-dev'
+	echo -n 'Password: '
+	_echo 'password'
 	echo
 }
 
