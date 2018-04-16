@@ -1,10 +1,10 @@
 path: '/workspace/wordpress'
 url: 'http://local.divi-dev.site'
-user: etdev
+user: divi-dev
 debug: false
 allow-root: true
 core config:
-  dbhost: localhost
+  dbhost: 127.0.0.1
   dbname: wordpress
   dbuser: root
   dbpass: password

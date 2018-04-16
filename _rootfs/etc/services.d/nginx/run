@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if ! [[ -e /tmp/.ran_once ]]; then
-	touch /tmp/.ran_once
+if ! [[ -e /tmp/.ran_once-nginx ]]; then
+	touch /tmp/.ran_once-nginx
 	mkdir -p /var/log/nginx
 fi
 

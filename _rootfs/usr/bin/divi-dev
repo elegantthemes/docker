@@ -22,6 +22,9 @@ setup() {
 	echo
 	echo 'http://local.divi-dev.site'
 	echo
+	echo 'Username: divi-dev'
+	echo 'Password: password'
+	echo
 }
 
 
