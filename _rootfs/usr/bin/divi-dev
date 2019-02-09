@@ -62,7 +62,7 @@ setup() {
 	cd /workspace/wordpress
 
 	# Give database time to come up
-	_sleep_with_progress_bar 10 'Initializing database...  '
+	_sleep_with_progress_bar 15 'Initializing database...  '
 
 	wp config create
 	wp core install \
