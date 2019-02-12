@@ -22,6 +22,7 @@ RUN set -e \
 	&& echo "resolvconf resolvconf/linkify-resolvconf boolean false" | debconf-set-selections \
 	&& apt-upgrade \
 	&& apt-install \
+		gnupg \
 		apt-transport-https \
 		git \
 		less \
@@ -39,7 +40,7 @@ RUN set -e \
 	&& curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 	&& echo 'deb https://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list \
 	# NodeJS
-	&& curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+	&& curl -sL https://deb.nodesource.com/setup_10.x | bash - \
 	&& apt-install nodejs yarn \
 	# WP-CLI
 	&& curl -L https://cdn.rawgit.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /usr/bin/wp \
