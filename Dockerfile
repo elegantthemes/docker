@@ -1,11 +1,11 @@
-ARG PHP_VERSION=7.3.0
+ARG PHP_VERSION=7.3.2
 
 FROM elegantthemes/php:${PHP_VERSION}
 
 # Version of WordPress to be used by this image
-ARG WP_VERSION=5.0.3
+ARG WP_VERSION=5.1.0
 # This image's version
-ARG IMAGE_VERSION=5.0.3
+ARG IMAGE_VERSION=5.1.0
 # Absolute path to WordPress files inside the container
 ARG VIRTUAL_ROOT=/workspace/wordpress
 # Site URL
