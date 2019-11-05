@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+
+  mariadb:
+    image: 'mariadb:10.4.8'
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      DATADIR: /data
+    restart: on-failure
+    volumes:
+      - 'database:/data'
+    network_mode: 'service:wordpress'
+
+  wordpress:
+    image: 'elegantthemes/divi-dev'
+    hostname: divi-dev
+    volumes:
+      - '${PWD}:/workspace/wordpress'
+    ports:
+      - '80:80'     # nginx
+      - '3306:3306' # mariadb
+      - '3000:3000' # webpack hmr
+
+volumes:
+  database: {}
