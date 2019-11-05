@@ -20,7 +20,7 @@ ENV \
 RUN set -e \
 	&& export DEBIAN_FRONTEND=non-interactive \
 	&& echo "resolvconf resolvconf/linkify-resolvconf boolean false" | debconf-set-selections \
-	&& apt-upgrade \
+	&& apt-get update \
 	&& apt-install \
 		gnupg \
 		apt-transport-https \
