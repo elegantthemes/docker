@@ -2,7 +2,7 @@
 
 ## Services
 * [mariadb](https://hub.docker.com/_/mariadb)
-* [wordpress (elegantthemes/divi-dev)](https://github.com/elegantthemes/docker/services/divi-dev)
+* [wordpress (elegantthemes/divi-dev)](https://github.com/elegantthemes/docker/tree/master/services/divi-dev)
 
 ## Use It
 ```
