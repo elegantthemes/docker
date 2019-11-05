@@ -18,7 +18,7 @@ docker pull elegantthemes/divi-dev:5.2.4
 ```
 
 ## Use It
-* [`docker-compose.yml`](https://github.com/elegantthemes/docker/stacks/divi-dev)
+* [`docker-compose.yml`](https://github.com/elegantthemes/docker/tree/master/stacks/divi-dev)
 ```
 docker-compose up -d
 docker-compose exec -u 1000 wordpress divi-dev setup
