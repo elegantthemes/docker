@@ -2,7 +2,7 @@
 
 ## What's Included
 
-**Base:** [Ubuntu 18.04.1](https://hub.docker.com/_/ubuntu/)
+**Base:** [Ubuntu 18.04](https://hub.docker.com/_/ubuntu/)
 
 * [NGINX](https://www.nginx.com)
 * [PHP](https://php.net)
@@ -14,7 +14,7 @@
 
 ## Get It
 ```
-docker pull elegantthemes/divi-dev:5.2.4
+docker pull elegantthemes/divi-dev:5.3
 ```
 
 ## Use It

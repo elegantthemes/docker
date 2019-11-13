@@ -1,11 +1,11 @@
-ARG PHP_VERSION=7.3.5
+ARG PHP_VERSION=7.3.11
 
 FROM elegantthemes/php:${PHP_VERSION}
 
 # Version of WordPress to be used by this image
-ARG WP_VERSION=5.2.4
+ARG WP_VERSION=5.3
 # This image's version
-ARG IMAGE_VERSION=5.2.4
+ARG IMAGE_VERSION=5.3
 # Absolute path to WordPress files inside the container
 ARG VIRTUAL_ROOT=/workspace/wordpress
 # Site URL
@@ -20,7 +20,7 @@ ENV \
 RUN set -e \
 	&& export DEBIAN_FRONTEND=non-interactive \
 	&& echo "resolvconf resolvconf/linkify-resolvconf boolean false" | debconf-set-selections \
-	&& apt-get update \
+	&& apt-get -y update \
 	&& apt-install \
 		gnupg \
 		apt-transport-https \
@@ -40,7 +40,7 @@ RUN set -e \
 	&& curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 	&& echo 'deb https://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list \
 	# NodeJS
-	&& curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+	&& curl -sL https://deb.nodesource.com/setup_12.x | bash - \
 	&& apt-install nodejs yarn \
 	# WP-CLI
 	&& curl -L https://cdn.rawgit.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /usr/bin/wp \

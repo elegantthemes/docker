@@ -1,2 +1,2 @@
 # docker
-Files for useful Docker services and stack configurations.
+Elegant Themes Public Docker Repo
