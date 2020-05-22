@@ -335,6 +335,8 @@ function check_cmd() {
 
   if [[ ${retcode} -ne 0 ]]; then
     error "$lineno" $*
+    echo 'Waiting 300 seconds...'
+    sleep 300
     exit 1 
   fi
 }
@@ -443,17 +445,17 @@ function exec_sql() {
     default_auth="default-auth=mysql_native_password"
   fi
 
-  retoutput=$(mysql --defaults-file=/dev/stdin --protocol=tcp \
-           --unbuffered --batch --silent ${args} -e "$query" <<EOF
-[client]
-user=${user//%/%%}
-password=${password//%/%%}
-host=${hostname//%/%%}
-port=${port//%/%%}
-connect-timeout=${TIMEOUT}
-${default_auth}
+  cat <<-EOF >/tmp/my.cnf
+    [client]
+    user=${user//%/%%}
+    password=${password//%/%%}
+    host=${hostname//%/%%}
+    port=${port//%/%%}
+    connect-timeout=${TIMEOUT}
+    ${default_auth}
 EOF
-)
+
+  retoutput=$(mysql --defaults-file=/tmp/my.cnf --protocol=tcp --unbuffered --batch --silent ${args} -e "$query")
   retvalue=$?
 
   if [[ $DEBUG -eq 1 ]]; then
